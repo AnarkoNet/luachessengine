@@ -1,0 +1,5 @@
+local u = require("util")
+local k = u.getch()
+print("("..k..")")
+print(string.byte(k))
+print(k=="\n")
