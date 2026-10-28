@@ -1,24 +1,22 @@
 local u = require("util")
 
-local ART = {
-    Pawn   = {"      ", "  ██  ", " ▀▀▀▀ "},
-    Rook   = {" ▄▄▄▄ ", "  ██  ", " ▀▀▀▀ "},
-    Knight = {"  ▄▄▄ ", " ▀▀██ ", "  ▀▀▀ "},
-    Bishop = {"  ▄▄  ", " ▀██▀ ", " ▀▀▀▀ "},
-    Queen  = {" ▄  ▄ ", " ▀██▀ ", " ▀▀▀▀ "},
-    King   = {" ▄▄▄▄ ", " ▀██▀ ", "  ▀▀  "}
-}
-
-local BLANK = require("pc.blank")
+-- local BLANK = require("pc.blank")
 
 local PC = {
     P = require("pc.w.p"),
     p = require("pc.b.p"),
-    R = {ART = ART.Rook,GETMOVES=BLANK.GETMOVES,MOVE=BLANK.MOVE},
+    R = require("pc.w.r"),
+    r = require("pc.b.r"),
     N = require("pc.w.n"),
-    B = {ART = ART.Bishop,GETMOVES=BLANK.GETMOVES,MOVE=BLANK.MOVE},
-    Q = {ART = ART.Queen,GETMOVES=BLANK.GETMOVES,MOVE=BLANK.MOVE},
-    K = {ART = ART.King,GETMOVES=BLANK.GETMOVES,MOVE=BLANK.MOVE},
+    n = require("pc.b.n"),
+    B = require("pc.w.b"),
+    b = require("pc.b.b"),
+    Q = require("pc.w.q"),
+    q = require("pc.b.q"),
+    K = require("pc.w.k"),
+    k = require("pc.b.k"),
+    O = require("pc.w.o"),
+    o = require("pc.b.o")
 }
 
 -- uppercase = White, lowercase = Black, 0 = Blank
@@ -26,8 +24,8 @@ local START = {
     {"r","n","b","q","k","b","n","r"},
     {"p","p","p","p","p","p","p","p"},
     {"0","0","0","0","0","0","0","0"},
-    {"0","0","0","0","0","0","0","0"},
-    {"0","0","0","0","0","0","0","0"},
+    {"0","0","0","o","O","0","0","0"},
+    {"0","0","0","O","o","0","0","0"},
     {"0","0","0","0","0","0","0","0"},
     {"P","P","P","P","P","P","P","P"},
     {"R","N","B","Q","K","B","N","R"}
@@ -76,7 +74,7 @@ local function render(board,selpos,hovpos,lastmove,moves)
 
                 -- Draw piece or empty square
                 if piece ~= "0" then
-                    line = line .. PC[string.upper(piece)].ART[y] .. "\27[0m"
+                    line = line .. PC[piece].ART[y] .. "\27[0m"
                 else
                     line = line .. "      "
                 end
@@ -94,6 +92,7 @@ local hover = {y=8,x=1}
 local selpos = nil
 local lastmove = {pc=""}
 local moves = {}
+local turn = 1
 local k=""
 while k~="Q" do
     print(render(board,selpos,hover,lastmove,moves))
@@ -113,7 +112,12 @@ while k~="Q" do
             lastmove=runit.LM
             selpos = nil
             moves={}
-        elseif u.cc(u.gi(board,hover.y,hover.x))==1 then
+            if turn == 1 then
+                turn = -1
+            else
+                turn = 1
+            end
+        elseif u.cc(u.gi(board,hover.y,hover.x))==turn then
             if selpos then
                 selpos = nil
                 moves={}
