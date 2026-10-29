@@ -45,6 +45,13 @@ function util.pi(a,b) -- py in
     end
 end
 
+function util.jt(a,b)
+    for i=1,#b do
+        a[#a+1]=b[i]
+    end
+    return a
+end
+
 if jit.os == "Windows" then
     function util.clear()
         os.execute("cls")
