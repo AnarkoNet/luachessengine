@@ -32,14 +32,16 @@ function bp.MOVE(board, pos, lastmove, mov)
     if mov.x ~= pos.x and u.gi(board,mov.y,mov.x)=="0" then
         board[pos.y][mov.x]="0" -- en passant
     end
+    local new = nil
     if mov.y==8 then
-        board[mov.y][mov.x]=string.lower(u.promo())
+        new=u.promo()
+        board[mov.y][mov.x]=string.lower(new)
     else
         board[mov.y][mov.x]="p"
     end
     board[pos.y][pos.x]="0"
     lastmove={pc="p",a=pos,b={y=mov.y,x=mov.x}}
-    return {B=board,LM=lastmove}
+    return {B=board,LM=lastmove,pp=new}
 end
 
 bp.ART={"      ","  ██  "," ▀▀▀▀ "}

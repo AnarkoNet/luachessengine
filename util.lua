@@ -14,6 +14,14 @@ function util.cc(x) -- Check Capitalization
     end
 end
 
+function util.coord(a)
+    if type(a)=="table" then -- coords
+        return (("abcdefgh"):sub(a.x,a.x))..(9-a.y)
+    elseif type(a)=="string" then -- algebraic notation
+        return {y=(9-tonumber(a:sub(2,2))),x=(("abcdefgh"):find(a:sub(1,1)))}
+    end
+end
+
 function util.gi(a,y,x) -- Get Index
     if type(a)=="table" then
         if a[y]==nil then

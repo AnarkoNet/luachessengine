@@ -1,5 +1,4 @@
-local u = require("util")
-local k = u.getch()
-print("("..k..")")
-print(string.byte(k))
-print(k=="\n")
+local k = nil
+local x = k or ""
+print(x)
+print(type(x))
